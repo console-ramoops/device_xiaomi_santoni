@@ -21,11 +21,12 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/developer_gsi_keys.mk)
 
 $(call inherit-product, vendor/xiaomi/santoni/santoni-vendor.mk)
 
+$(call soong_config_set, qtidisplay, gralloc4, headless, true)
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
-    $(LOCAL_PATH)/overlay-lineage \
-    $(LOCAL_PATH)/overlay-alphadroid
+    $(LOCAL_PATH)/overlay-lineage
 
 # RRO (Runtime Resource Overlay)
 PRODUCT_ENFORCE_RRO_TARGETS := *
@@ -41,6 +42,8 @@ TARGET_SCREEN_WIDTH := 720
 TARGET_BOARD_PLATFORM := msm8937
 TARGET_BOARD_SUFFIX := _64
 
+$(call inherit-product-if-exists, hardware/mithorium/mithorium_qcom_hals.mk)
+
 # Permissions
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.audio.low_latency.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.audio.low_latency.xml \
@@ -50,7 +53,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.camera.front.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.front.xml \
     frameworks/native/data/etc/android.hardware.camera.full.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.full.xml \
     frameworks/native/data/etc/android.hardware.camera.raw.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.camera.raw.xml \
-    frameworks/native/data/etc/android.hardware.consumerir.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.consumerir.xml \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.fingerprint.xml \
     frameworks/native/data/etc/android.hardware.location.gps.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.location.gps.xml \
     frameworks/native/data/etc/android.hardware.opengles.aep.xml:$(TARGET_COPY_OUT_VENDOR)/etc/permissions/android.hardware.opengles.aep.xml \
@@ -116,6 +118,7 @@ PRODUCT_PACKAGES += \
     android.hardware.audio@7.0-impl:32 \
     android.hardware.audio.common@7.0 \
     android.hardware.audio.common@7.0-util \
+    android.hardware.soundtrigger@2.3-impl:32 \
     android.hardware.audio.effect@2.0-impl:32 \
     android.hardware.audio.effect@7.0 \
     android.hardware.audio.effect@7.0-impl:32 \
@@ -204,15 +207,21 @@ PRODUCT_PACKAGES += \
     libvulkan \
     libqdMetaData \
     libtinyxml \
-    vendor.display.config@1.0.vendor \
-    vendor.display.config@2.0
+    libgralloc.system.qti \
+    libqdMetaData.system \
+    vendor.display.config@1.11.vendor \
+    vendor.display.config@2.0.vendor
 
 PRODUCT_PACKAGES += \
     vendor.qti.hardware.display.allocator-service \
     vendor.qti.hardware.display.mapper@2.0.vendor \
+    vendor.qti.hardware.display.mapper@3.0.vendor \
+    vendor.qti.hardware.display.mapper@4.0.vendor \
     android.hardware.graphics.mapper@3.0-impl-qti-display \
     android.hardware.graphics.mapper@4.0-impl-qti-display \
     android.hardware.graphics.composer@2.1-service \
+    android.frameworks.displayservice@1.0.vendor \
+    vendor.qti.hardware.display.mapperextensions@1.1.vendor \
     android.hardware.memtrack@1.0-impl \
     android.hardware.memtrack@1.0-service
 
